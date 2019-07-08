@@ -1,0 +1,119 @@
+#include<bits/stdc++.h>
+using namespace std;
+#define IOS ios::sync_with_stdio(0); cin.tie(0); cout.tie(0);
+#define endl "\n"
+#define ll long long
+#define int long long
+#define double long double
+#define pb push_back
+#define max(a,b) (a>b?a:b)
+#define min(a,b) (a<b?a:b)
+#define diff(a,b) (a>b?a-b:b-a)
+const int N=1e5+5;
+void pairsort(int a[], int b[], int n){
+    pair<int, int> pairt[n];
+    for (int i = 0; i < n; i++) 
+    {
+        pairt[i].first = a[i];
+        pairt[i].second = b[i];
+    }
+    sort(pairt, pairt + n);
+    for (int i = 0; i < n; i++) 
+    {
+        a[i] = pairt[i].first;
+        b[i] = pairt[i].second;
+    }
+}
+int gcd(int a, int b){
+    if (b == 0)
+        return a;
+    return gcd(b, a % b); 
+}
+int isPrime(int n){
+    if(n < 2)
+        return 0;
+    if(n < 4)
+        return 1;
+    if(n % 2 == 0 or n % 3 == 0)
+        return 0;
+    for(int i = 5; i*i <= n; i += 6)
+        if(n % i == 0 or n % (i+2) == 0)
+            return 0;
+    return 1;
+}
+long long C(int n, int r) {
+    if(r>n-r) 
+        r=n-r;
+    long long ans=1;
+    for(int i=1;i<=r;i++){
+        ans*=n-r+i;
+        ans/=i;
+    }
+    return ans;
+}
+int mod = 1e9+7;
+int modexpo(int x,int p){
+    int res = 1;
+    x = x%mod;
+    while(p){
+        if(p%2)
+            res = res * x;
+        p >>= 1;
+        x = x*x % mod;
+        res %= mod;
+    }
+    return res;
+}
+int n,x;
+deque<int> d;
+string s;
+int32_t main()
+{
+    IOS;
+    cin>>n;
+    for(int i=0;i<n;i++)
+    {
+        cin>>x;
+        d.push_back(x);
+    }
+    x=0;
+    while(d.size()&&(x<d.front()||x<d.back()))
+    {
+        if(d.front()<d.back())
+        {   
+            if(x<d.front())
+                s+='L',x=d.front(),d.pop_front();
+            else
+                s+='R',x=d.back(),d.pop_back();
+        }
+        else if(d.back()<d.front())
+        {
+            if(x<d.back())
+                s+='R',x=d.back(),d.pop_back();
+            else
+                s+='L',x=d.front(),d.pop_front();
+        }
+        else
+        {
+            string s1=s,s2=s;
+            deque<int> d1,d2;
+            while(d.size())
+            {
+                int p=d.front();
+                d.pop_front();
+                d1.push_back(p),d2.push_back(p);
+            }
+            int x1=x,x2=x;
+            while(d1.size()&&d1.front()>x1)
+                s1+='L',x1=d1.front(),d1.pop_front();
+            while(d2.size()&&d2.back()>x2)
+                s2+='R',x2=d2.back(),d2.pop_back();
+            if(s1.length()>=s2.length())
+                s=s1;
+            else
+                s=s2;
+        }
+    }
+    cout<<s.length()<<endl<<s;
+    return 0;
+}
